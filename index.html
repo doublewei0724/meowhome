@@ -27,8 +27,6 @@
     .bar { width: min(360px, 80vw); height: 14px; border-radius: 7px; background: #fff; overflow: hidden; box-shadow: inset 0 0 0 2px var(--line); }
     .fill { height: 100%; width: 0; border-radius: 7px; background: var(--orange); transition: width .2s; }
     .tip { margin: 0; font-size: 14px; color: var(--soft); max-width: 420px; line-height: 1.6; }
-    .legal { position: fixed; bottom: 14px; left: 0; right: 0; text-align: center; font-size: 13px; }
-    .legal a { color: var(--soft); margin: 0 8px; }
     #error { display: none; max-width: 460px; background: #fff; border-radius: 18px; padding: 16px 20px; line-height: 1.6; }
   </style>
 </head>
@@ -42,7 +40,6 @@
     <p class="sub" id="status">正在搬家具進來…</p>
     <p class="tip" id="tip">第一次打開要下載一下，之後就會很快。手機請橫著拿。</p>
     <div id="error"></div>
-    <div class="legal"><a href="privacy.html" target="_blank">隱私權政策</a><a href="terms.html" target="_blank">服務條款</a><a href="delete-account.html" target="_blank">刪除帳號</a></div>
   </div>
   <script>
     // Installable as an app (add to home screen); the service worker only keeps this page and its icons at hand.
@@ -71,7 +68,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DoubleWei",
         productName: "Meow Home",
-        productVersion: "0.11.0",
+        productVersion: "0.10.0",
         matchWebGLToCanvasSize: true,
         devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
       }, function (progress) {

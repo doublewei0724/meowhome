@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Meow Home・喵居</title>
+  <meta name="description" content="喵居 Meow Home：和貓咪一起過慢慢來的小日子。">
+  <meta name="theme-color" content="#FBF3E6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="喵居">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    :root { --cream: #FBF3E6; --orange: #E8873A; --brown: #5B4636; --soft: #8A7461; --line: #EADBC6; }
+    html, body { margin: 0; height: 100%; background: var(--cream); overflow: hidden; touch-action: none;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; color: var(--brown); }
+    #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; background: var(--cream); outline: none; }
+    #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; padding: 24px; text-align: center; background: var(--cream); transition: opacity .4s; }
+    #loading.done { opacity: 0; pointer-events: none; }
+    #logo { width: 132px; height: 132px; border-radius: 34px; box-shadow: 0 6px 0 var(--line); }
+    h1 { margin: 6px 0 0; font-size: 44px; color: var(--orange); letter-spacing: 4px; }
+    .sub { margin: 0; font-size: 17px; color: var(--soft); }
+    .bar { width: min(360px, 80vw); height: 14px; border-radius: 7px; background: #fff; overflow: hidden; box-shadow: inset 0 0 0 2px var(--line); }
+    .fill { height: 100%; width: 0; border-radius: 7px; background: var(--orange); transition: width .2s; }
+    .tip { margin: 0; font-size: 14px; color: var(--soft); max-width: 420px; line-height: 1.6; }
+    #error { display: none; max-width: 460px; background: #fff; border-radius: 18px; padding: 16px 20px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <canvas id="game" tabindex="-1"></canvas>
+  <div id="loading">
+    <img id="logo" src="icons/icon-192.png" alt="">
+    <h1>喵居</h1>
+    <p class="sub">Meow Home・貓咪的小日子</p>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <p class="sub" id="status">正在搬家具進來…</p>
+    <p class="tip" id="tip">第一次打開要下載一下，之後就會很快。手機請橫著拿。</p>
+    <div id="error"></div>
+  </div>
+  <script>
+    // Installable as an app (add to home screen); the service worker only keeps this page and its icons at hand.
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
+
+    var canvas = document.getElementById("game");
+    var fill = document.getElementById("fill");
+    var statusText = document.getElementById("status");
+    var steps = ["正在搬家具進來…", "正在幫貓咪梳毛…", "正在把信放進信箱…", "快好了，貓咪伸了個懶腰…"];
+
+    function showError(message) {
+      var box = document.getElementById("error");
+      box.style.display = "block";
+      box.textContent = message;
+      document.querySelector(".bar").style.display = "none";
+      statusText.textContent = "打不開遊戲";
+    }
+
+    var script = document.createElement("script");
+    script.src = "Build/Web.loader.js";
+    script.onload = function () {
+      createUnityInstance(canvas, {
+        dataUrl: "Build/Web.data.unityweb",
+        frameworkUrl: "Build/Web.framework.js.unityweb",
+        codeUrl: "Build/Web.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DoubleWei",
+        productName: "Meow Home",
+        productVersion: "0.10.0",
+        matchWebGLToCanvasSize: true,
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+      }, function (progress) {
+        fill.style.width = Math.round(progress * 100) + "%";
+        statusText.textContent = steps[Math.min(steps.length - 1, Math.floor(progress * steps.length))];
+      }).then(function () {
+        document.getElementById("loading").classList.add("done");
+        canvas.focus();
+      }).catch(function (message) {
+        showError("這台裝置的瀏覽器打不開遊戲（" + message + "）。請換成最新版的 Chrome、Edge 或 Safari 再試一次。");
+      });
+    };
+    script.onerror = function () { showError("下載遊戲時出了問題，請確認網路後重新整理頁面。"); };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

@@ -1,6 +1,6 @@
 // Meow Home: keeps the page and its icons for opening quickly (and as an installed app). The game files themselves
 // are cached by Unity's own loader, so they are simply fetched here.
-const PAGE_CACHE = "meowhome-page-v1";
+const PAGE_CACHE = "meowhome-page-v2";
 const PAGE_FILES = ["./", "./index.html", "./manifest.webmanifest", "./icons/icon-192.png", "./icons/icon-512.png"];
 
 self.addEventListener("install", (event) => {

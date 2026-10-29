@@ -39,6 +39,7 @@
       .sub { font-size: 15px; }
       .tip { font-size: 13px; line-height: 1.5; max-width: 520px; }
       .legal { margin-top: 2px; }
+      #loading .about-btn { padding: 6px 16px; font-size: 14px; }
     }
     /* Phones held upright: the game is made for landscape, so ask for a turn. */
     #rotate { display: none; position: fixed; inset: 0; z-index: 10; flex-direction: column; align-items: center; justify-content: center;
@@ -50,6 +51,12 @@
     @keyframes turn { 0%, 25% { transform: rotate(0deg); } 55%, 100% { transform: rotate(-90deg); } }
     @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
     #error { display: none; max-width: 460px; background: #fff; border-radius: 18px; padding: 16px 20px; line-height: 1.6; }
+    /* 關於遊戲: read about the game while it loads (or any time before it starts); 返回 closes it. */
+    .about-btn { border: 0; border-radius: 999px; padding: 9px 22px; font: inherit; font-size: 16px; font-weight: 700; color: var(--brown);
+      background: #fff; box-shadow: 0 3px 0 var(--line); cursor: pointer; }
+    #about { display: none; position: fixed; inset: 0; z-index: 20; background: var(--cream); }
+    #about.open { display: block; }
+    #about iframe { width: 100%; height: 100%; border: 0; display: block; }
   </style>
 </head>
 <body>
@@ -68,8 +75,20 @@
     <p class="sub" id="status">正在搬家具進來…</p>
     <p class="tip" id="tip">第一次打開要下載一下，之後就會很快。手機請橫著拿。</p>
     <div id="error"></div>
+    <button class="about-btn" id="aboutBtn" type="button">關於遊戲</button>
     <div class="legal"><a href="privacy.html" target="_blank">隱私權政策</a><a href="terms.html" target="_blank">服務條款</a><a href="delete-account.html" target="_blank">刪除帳號</a></div>
   </div>
+  <div id="about"><iframe id="aboutFrame" title="關於喵居"></iframe></div>
+  <script>
+    (function () {
+      var about = document.getElementById("about"), frame = document.getElementById("aboutFrame");
+      document.getElementById("aboutBtn").addEventListener("click", function () {
+        if (!frame.getAttribute("src")) frame.setAttribute("src", "about.html");
+        about.classList.add("open");
+      });
+      window.addEventListener("message", function (e) { if (e.data === "meow-about-close") about.classList.remove("open"); });
+    })();
+  </script>
   <script>
     // Installable as an app (add to home screen); the service worker only keeps this page and its icons at hand.
     if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
@@ -113,7 +132,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DoubleWei",
         productName: "Meow Home",
-        productVersion: "0.13.3",
+        productVersion: "0.13.4",
         matchWebGLToCanvasSize: true,
         devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
       }, function (progress) {

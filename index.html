@@ -8,7 +8,9 @@
   <meta name="theme-color" content="#FBF3E6">
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <!-- black-translucent: the page runs under the status bar. With "default" an iPhone keeps a strip for the status bar at
+       the top, and when the installed app opens sideways that empty strip can stay, pushing the game down. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="喵居">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" type="image/png" href="icons/icon-192.png">
@@ -132,7 +134,7 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DoubleWei",
         productName: "Meow Home",
-        productVersion: "0.24.0",
+        productVersion: "0.25.0",
         matchWebGLToCanvasSize: true,
         devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
       }, function (progress) {

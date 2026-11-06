@@ -134,15 +134,19 @@
         streamingAssetsUrl: "StreamingAssets",
         companyName: "DoubleWei",
         productName: "Meow Home",
-        productVersion: "0.27.2",
+        productVersion: "0.28.0",
         matchWebGLToCanvasSize: true,
         devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
       }, function (progress) {
         fill.style.width = Math.round(progress * 100) + "%";
         statusText.textContent = steps[Math.min(steps.length - 1, Math.floor(progress * steps.length))];
-      }).then(function () {
+      }).then(function (instance) {
         document.getElementById("loading").classList.add("done");
         canvas.focus();
+        // Switched away or swiped shut: save what's going on right now (once the page is hidden the game stops running).
+        var saveNow = function () { try { instance.SendMessage("Game", "SaveNow"); } catch (e) {} };
+        document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") saveNow(); });
+        window.addEventListener("pagehide", saveNow);
       }).catch(function (message) {
         showError("這台裝置的瀏覽器打不開遊戲（" + message + "）。請換成最新版的 Chrome、Edge 或 Safari 再試一次。");
       });

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Meow Home・喵居</title>
+  <meta name="description" content="喵居 Meow Home：和貓咪一起過慢慢來的小日子。">
+  <meta name="theme-color" content="#FBF3E6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- black-translucent: the page runs under the status bar. With "default" an iPhone keeps a strip for the status bar at
+       the top, and when the installed app opens sideways that empty strip can stay, pushing the game down. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="喵居">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    :root { --cream: #FBF3E6; --orange: #E8873A; --brown: #5B4636; --soft: #8A7461; --line: #EADBC6; }
+    /* iPhone Safari enlarges some text when turned sideways; keep every size as written. */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    html, body { margin: 0; height: 100%; background: var(--cream); overflow: hidden; touch-action: none;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; color: var(--brown); }
+    #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; background: var(--cream); outline: none; }
+    #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 14px; padding: 24px; text-align: center; background: var(--cream); transition: opacity .4s; }
+    #loading.done { opacity: 0; pointer-events: none; }
+    #logo { width: 132px; height: 132px; border-radius: 34px; box-shadow: 0 6px 0 var(--line); }
+    h1 { margin: 6px 0 0; font-size: 44px; color: var(--orange); letter-spacing: 4px; }
+    .sub { margin: 0; font-size: 17px; color: var(--soft); }
+    .bar { width: min(360px, 80vw); height: 14px; border-radius: 7px; background: #fff; overflow: hidden; box-shadow: inset 0 0 0 2px var(--line); }
+    .fill { height: 100%; width: 0; border-radius: 7px; background: var(--orange); transition: width .2s; }
+    .tip { margin: 0; font-size: 14px; color: var(--soft); max-width: 420px; line-height: 1.6; }
+    .legal { margin-top: 6px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; font-size: 13px; line-height: 1.4; }
+    .legal a { color: var(--soft); padding: 4px 2px; }
+    /* A phone held sideways is short: a smaller logo and tighter spacing so everything fits. */
+    @media (max-height: 520px) {
+      #loading { gap: 8px; padding: 12px 24px; }
+      #logo { width: 84px; height: 84px; border-radius: 22px; box-shadow: 0 4px 0 var(--line); }
+      h1 { margin: 0; font-size: 32px; letter-spacing: 3px; }
+      .sub { font-size: 15px; }
+      .tip { font-size: 13px; line-height: 1.5; max-width: 520px; }
+      .legal { margin-top: 2px; }
+    }
+    /* Phones held upright: the game is made for landscape, so ask for a turn. */
+    #rotate { display: none; position: fixed; inset: 0; z-index: 10; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; padding: 24px; text-align: center; background: var(--cream); }
+    #rotate b { font-size: 22px; }
+    #rotate p { margin: 0; color: var(--soft); font-size: 15px; line-height: 1.6; max-width: 300px; }
+    .phone { width: 58px; height: 100px; border-radius: 14px; border: 5px solid var(--brown); position: relative; animation: turn 2.4s ease-in-out infinite; }
+    .phone::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 14px; height: 4px; margin-left: -7px; border-radius: 2px; background: var(--brown); }
+    @keyframes turn { 0%, 25% { transform: rotate(0deg); } 55%, 100% { transform: rotate(-90deg); } }
+    @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
+    #error { display: none; max-width: 460px; background: #fff; border-radius: 18px; padding: 16px 20px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <canvas id="game" tabindex="-1"></canvas>
+  <div id="rotate">
+    <div class="phone"></div>
+    <b>請把手機轉成橫的</b>
+    <p>喵居要橫著玩。轉過來就能繼續了。</p>
+    <p>小提示：加到主畫面後打開，畫面會固定是橫的。</p>
+  </div>
+  <div id="loading">
+    <img id="logo" src="icons/icon-192.png" alt="">
+    <h1>喵居</h1>
+    <p class="sub">Meow Home・貓咪的小日子</p>
+    <div class="bar"><div class="fill" id="fill"></div></div>
+    <p class="sub" id="status">正在搬家具進來…</p>
+    <p class="tip" id="tip">第一次打開要下載一下，之後就會很快。手機請橫著拿。</p>
+    <div id="error"></div>
+  </div>
+  <div id="otherTab" style="display:none;position:fixed;inset:0;z-index:50;background:#FFF8F0;color:#5B4636;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:sans-serif;text-align:center;padding:24px">
+    <div style="font-size:22px;font-weight:bold">遊戲在另一個分頁開著</div>
+    <div style="font-size:16px;opacity:.8">同時開兩個會互相蓋掉進度，這裡先停下來了（剛才的進度已經存好）。</div>
+    <button id="playHere" type="button" style="font-size:18px;padding:10px 26px;border-radius:22px;border:none;background:#8FD3C0;color:#fff;cursor:pointer">在這裡玩</button>
+  </div>
+  <script src="tablock.js"></script>
+  <script>
+    // Installable as an app (add to home screen); the service worker only keeps this page and its icons at hand.
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
+
+    // On phones, the first tap goes fullscreen and locks landscape where the browser allows it (Android Chrome and the
+    // installed app; iPhone Safari cannot lock, so the turn-your-phone card above covers it).
+    function lockLandscape() {
+      var el = document.documentElement;
+      var full = el.requestFullscreen ? el.requestFullscreen({ navigationUI: "hide" }) : null;
+      Promise.resolve(full).catch(function () {}).then(function () {
+        if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(function () {});
+      });
+    }
+    if (matchMedia("(pointer: coarse)").matches) {
+      document.addEventListener("pointerdown", function once() {
+        document.removeEventListener("pointerdown", once);
+        lockLandscape();
+      });
+    }
+
+    // One game at a time: a tab opened later takes over, and this one saves and stops (tablock.js). Two would write over
+    // each other's progress. "在這裡玩" reloads this one, which then takes over in its turn.
+    var gameInstance = null, stoppedForOtherTab = false;
+    function stopForOtherTab() {
+      if (stoppedForOtherTab) return;
+      stoppedForOtherTab = true;
+      var box = document.getElementById("otherTab");
+      box.style.display = "flex";
+      if (gameInstance) {
+        try { gameInstance.SendMessage("Game", "SaveNow"); } catch (e) {}
+        setTimeout(function () { try { gameInstance.Quit(); } catch (e) {} }, 300);
+      }
+    }
+    document.getElementById("playHere").addEventListener("click", function () { location.reload(); });
+    if (window.MeowTabLock) MeowTabLock(stopForOtherTab);
+
+    var canvas = document.getElementById("game");
+    var fill = document.getElementById("fill");
+    var statusText = document.getElementById("status");
+    var steps = ["正在搬家具進來…", "正在幫貓咪梳毛…", "正在把信放進信箱…", "快好了，貓咪伸了個懶腰…"];
+
+    function showError(message) {
+      var box = document.getElementById("error");
+      box.style.display = "block";
+      box.textContent = message;
+      document.querySelector(".bar").style.display = "none";
+      statusText.textContent = "打不開遊戲";
+    }
+
+    var script = document.createElement("script");
+    script.src = "Build/Web.loader.js";
+    script.onload = function () {
+      createUnityInstance(canvas, {
+        dataUrl: "Build/Web.data.unityweb",
+        frameworkUrl: "Build/Web.framework.js.unityweb",
+        codeUrl: "Build/Web.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DoubleWei",
+        productName: "Meow Home",
+        productVersion: "0.47.13",
+        matchWebGLToCanvasSize: true,
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+      }, function (progress) {
+        fill.style.width = Math.round(progress * 100) + "%";
+        statusText.textContent = steps[Math.min(steps.length - 1, Math.floor(progress * steps.length))];
+      }).then(function (instance) {
+        gameInstance = instance;
+        // (Another tab took over while this one was still loading.)
+        if (stoppedForOtherTab) { try { instance.Quit(); } catch (e) {} return; }
+        document.getElementById("loading").classList.add("done");
+        canvas.focus();
+        // Switched away or swiped shut: save what's going on right now (once the page is hidden the game stops running).
+        var saveNow = function () { try { instance.SendMessage("Game", "SaveNow"); } catch (e) {} };
+        document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") saveNow(); });
+        window.addEventListener("pagehide", saveNow);
+      }).catch(function (message) {
+        showError("這台裝置的瀏覽器打不開遊戲（" + message + "）。請換成最新版的 Chrome、Edge 或 Safari 再試一次。");
+      });
+    };
+    script.onerror = function () { showError("下載遊戲時出了問題，請確認網路後重新整理頁面。"); };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>

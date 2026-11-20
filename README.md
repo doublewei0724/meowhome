@@ -1,4 +1,4 @@
-# 喵居 Meow Home（網頁版 0.50.63）
+# 喵居 Meow Home（網頁版 0.50.64）
 
 和貓咪一起過慢慢來的小日子。直接在瀏覽器玩：https://doublewei0724.github.io/meowhome/
 

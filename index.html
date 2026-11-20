@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Meow Home・喵居</title>
+  <meta name="description" content="喵居 Meow Home：和貓咪一起過慢慢來的小日子。">
+  <meta name="theme-color" content="#FBF3E6">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <!-- black-translucent: the page runs under the status bar. With "default" an iPhone keeps a strip for the status bar at
+       the top, and when the installed app opens sideways that empty strip can stay, pushing the game down. -->
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="喵居">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <style>
+    :root { --cream: #FBF3E6; --orange: #E8873A; --brown: #5B4636; --soft: #8A7461; --line: #EADBC6; }
+    /* 「喵居」 in the game's own rounded font (jf open 粉圓, SIL OFL): only those two characters, cut out by
+       tools/web/title_font.py so it is a couple of KB and needs no download. */
+    @font-face { font-family: "MeowTitle"; font-display: block;
+      src: url(data:font/woff;base64,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) format("woff"); }
+    /* iPhone Safari enlarges some text when turned sideways; keep every size as written. */
+    html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    html, body { margin: 0; height: 100%; background: var(--cream); overflow: hidden; touch-action: none;
+      font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif; color: var(--brown); }
+    #game { position: fixed; inset: 0; width: 100%; height: 100%; display: block; background: var(--cream); outline: none; }
+    /* The loading page: a cozy room picture (loading-bg.jpg; the warm gradients show while it arrives), paw prints drifting up,
+       and a see-through card with the icon bobbing. */
+    #loading { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; padding: 24px;
+      text-align: center; overflow: hidden; transition: opacity .5s, transform .5s;
+      background: url(loading-bg.jpg) center / cover no-repeat,
+        radial-gradient(circle at 14% 18%, #FFE3C4 0, rgba(255, 227, 196, 0) 42%),
+        radial-gradient(circle at 88% 82%, #F8D6B8 0, rgba(248, 214, 184, 0) 44%),
+        radial-gradient(circle at 80% 12%, #FFF6EA 0, rgba(255, 246, 234, 0) 30%),
+        var(--cream); }
+    #loading.done { opacity: 0; transform: scale(1.03); pointer-events: none; }
+    .paws { position: absolute; inset: 0; pointer-events: none; }
+    .paws svg { position: absolute; bottom: -60px; fill: var(--orange); opacity: 0; animation: rise linear infinite; }
+    @keyframes rise {
+      0% { transform: translateY(0) rotate(var(--r, 0deg)); opacity: 0; }
+      12% { opacity: var(--o, .16); }
+      80% { opacity: var(--o, .16); }
+      100% { transform: translateY(-115vh) rotate(calc(var(--r, 0deg) + 30deg)); opacity: 0; }
+    }
+    .card { position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px;
+      padding: 44px 84px 36px; border-radius: 36px; background: rgba(255, 250, 243, .22);
+      -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+      box-shadow: 0 18px 50px rgba(91, 70, 54, .16), inset 0 0 0 2px rgba(255, 255, 255, .75); }
+    .logo-wrap { position: relative; animation: bob 3.2s ease-in-out infinite; }
+    .logo-wrap::before { content: ""; position: absolute; inset: -14px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 135, 58, .22) 0, rgba(232, 135, 58, 0) 70%); }
+    @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
+    #logo { position: relative; display: block; width: 120px; height: 120px; border-radius: 32px; }
+    h1 { margin: 18px 0 0; font-family: "MeowTitle", "Noto Sans TC", "PingFang TC", sans-serif; font-weight: normal;
+      font-size: 52px; line-height: 1.1; color: var(--orange); letter-spacing: 6px; text-indent: 6px;
+      -webkit-text-stroke: 1.8px var(--orange); text-shadow: 0 3px 0 #FFE1C2; }
+    .sub { margin: 0; font-size: 16px; color: var(--soft); }
+    .tagline { letter-spacing: 1px; }
+    .bar { position: relative; width: min(400px, 60vw); margin-top: 10px; }
+    .track { height: 16px; border-radius: 8px; background: #fff; overflow: hidden; box-shadow: inset 0 0 0 2px var(--line); }
+    .fill { height: 100%; width: 0; border-radius: 8px; transition: width .25s;
+      background: repeating-linear-gradient(-45deg, rgba(255, 255, 255, .24) 0 8px, rgba(255, 255, 255, 0) 8px 16px),
+        linear-gradient(90deg, #F4AA66, var(--orange));
+      background-size: 22.6px 22.6px, 100% 100%; animation: stripes .9s linear infinite; }
+    @keyframes stripes { to { background-position: 22.6px 0, 0 0; } }
+    .status { display: flex; align-items: baseline; justify-content: center; gap: 10px; min-height: 22px; }
+    #status { transition: opacity .22s; }
+    #status.swap { opacity: 0; }
+    #pct { font-size: 15px; color: var(--orange); font-variant-numeric: tabular-nums; }
+    .legal { margin-top: 6px; display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 18px; font-size: 13px; line-height: 1.4; }
+    .legal a { color: var(--soft); padding: 4px 2px; }
+    /* A phone held sideways is short: a smaller logo and tighter spacing so everything fits. */
+    @media (max-height: 520px) {
+      #loading { padding: 10px 24px; }
+      .card { gap: 7px; padding: 18px 56px 16px; border-radius: 28px; }
+      #logo { width: 72px; height: 72px; border-radius: 20px; }
+      h1 { margin: 8px 0 0; font-size: 36px; letter-spacing: 4px; text-indent: 4px; -webkit-text-stroke: 1.3px var(--orange); text-shadow: 0 2px 0 #FFE1C2; }
+      .sub { font-size: 14px; }
+      .bar { margin-top: 4px; }
+      .legal { margin-top: 2px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .paws { display: none; }
+      .logo-wrap, .fill { animation: none; }
+    }
+    /* Phones held upright: the game is made for landscape, so ask for a turn. */
+    #rotate { display: none; position: fixed; inset: 0; z-index: 10; flex-direction: column; align-items: center; justify-content: center;
+      gap: 18px; padding: 24px; text-align: center; background: var(--cream); }
+    #rotate b { font-size: 22px; }
+    #rotate p { margin: 0; color: var(--soft); font-size: 15px; line-height: 1.6; max-width: 300px; }
+    .phone { width: 58px; height: 100px; border-radius: 14px; border: 5px solid var(--brown); position: relative; animation: turn 2.4s ease-in-out infinite; }
+    .phone::after { content: ""; position: absolute; left: 50%; bottom: 6px; width: 14px; height: 4px; margin-left: -7px; border-radius: 2px; background: var(--brown); }
+    @keyframes turn { 0%, 25% { transform: rotate(0deg); } 55%, 100% { transform: rotate(-90deg); } }
+    @media (orientation: portrait) and (pointer: coarse) { #rotate { display: flex; } }
+    #error { display: none; max-width: 460px; background: #fff; border-radius: 18px; padding: 16px 20px; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <canvas id="game" tabindex="-1"></canvas>
+  <div id="rotate">
+    <div class="phone"></div>
+    <b>請把手機轉成橫的</b>
+    <p>喵居要橫著玩。轉過來就能繼續了。</p>
+    <p>小提示：加到主畫面後打開，畫面會固定是橫的。</p>
+  </div>
+  <div id="loading">
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="paw" viewBox="0 0 40 40">
+        <ellipse cx="20" cy="27" rx="10" ry="8.5"/>
+        <circle cx="8.5" cy="16" r="4"/><circle cx="15.5" cy="9" r="4.2"/>
+        <circle cx="24.5" cy="9" r="4.2"/><circle cx="31.5" cy="16" r="4"/>
+      </symbol>
+    </svg>
+    <div class="paws" aria-hidden="true">
+      <svg style="left:6%;width:30px;height:30px;--r:-20deg;--o:.14;animation-duration:15s;animation-delay:-2s"><use href="#paw"/></svg>
+      <svg style="left:17%;width:22px;height:22px;--r:15deg;--o:.12;animation-duration:12s;animation-delay:-8s"><use href="#paw"/></svg>
+      <svg style="left:28%;width:36px;height:36px;--r:-8deg;--o:.10;animation-duration:18s;animation-delay:-12s"><use href="#paw"/></svg>
+      <svg style="left:41%;width:20px;height:20px;--r:25deg;--o:.12;animation-duration:13s;animation-delay:-5s"><use href="#paw"/></svg>
+      <svg style="left:56%;width:28px;height:28px;--r:-30deg;--o:.14;animation-duration:16s;animation-delay:-10s"><use href="#paw"/></svg>
+      <svg style="left:67%;width:24px;height:24px;--r:10deg;--o:.12;animation-duration:11s;animation-delay:-1s"><use href="#paw"/></svg>
+      <svg style="left:78%;width:34px;height:34px;--r:-15deg;--o:.11;animation-duration:17s;animation-delay:-7s"><use href="#paw"/></svg>
+      <svg style="left:90%;width:22px;height:22px;--r:20deg;--o:.14;animation-duration:14s;animation-delay:-11s"><use href="#paw"/></svg>
+      <svg style="left:50%;width:18px;height:18px;--r:-5deg;--o:.10;animation-duration:19s;animation-delay:-15s"><use href="#paw"/></svg>
+      <svg style="left:12%;width:26px;height:26px;--r:35deg;--o:.10;animation-duration:20s;animation-delay:-17s"><use href="#paw"/></svg>
+    </div>
+    <div class="card">
+      <div class="logo-wrap"><img id="logo" src="icons/icon-192.png" alt=""></div>
+      <h1>喵居</h1>
+      <p class="sub tagline">Meow Home・貓咪的小日子</p>
+      <div class="bar">
+        <div class="track"><div class="fill" id="fill"></div></div>
+      </div>
+      <p class="sub status"><span id="status">正在搬家具進來…</span><b id="pct">0%</b></p>
+      <div id="error"></div>
+    </div>
+  </div>
+  <div id="otherTab" style="display:none;position:fixed;inset:0;z-index:50;background:#FFF8F0;color:#5B4636;align-items:center;justify-content:center;flex-direction:column;gap:16px;font-family:sans-serif;text-align:center;padding:24px">
+    <div style="font-size:22px;font-weight:bold">遊戲在另一個分頁開著</div>
+    <div style="font-size:16px;opacity:.8">同時開兩個會互相蓋掉進度，這裡先停下來了（剛才的進度已經存好）。</div>
+    <button id="playHere" type="button" style="font-size:18px;padding:10px 26px;border-radius:22px;border:none;background:#8FD3C0;color:#fff;cursor:pointer">在這裡玩</button>
+  </div>
+  <script src="tablock.js"></script>
+  <script>
+    // Installable as an app (add to home screen); the service worker only keeps this page and its icons at hand.
+    if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function () {});
+
+    // On phones, the first tap goes fullscreen and locks landscape where the browser allows it (Android Chrome and the
+    // installed app; iPhone Safari cannot lock, so the turn-your-phone card above covers it).
+    function lockLandscape() {
+      var el = document.documentElement;
+      var full = el.requestFullscreen ? el.requestFullscreen({ navigationUI: "hide" }) : null;
+      Promise.resolve(full).catch(function () {}).then(function () {
+        if (screen.orientation && screen.orientation.lock) screen.orientation.lock("landscape").catch(function () {});
+      });
+    }
+    if (matchMedia("(pointer: coarse)").matches) {
+      document.addEventListener("pointerdown", function once() {
+        document.removeEventListener("pointerdown", once);
+        lockLandscape();
+      });
+    }
+
+    // One game at a time: a tab opened later takes over, and this one saves and stops (tablock.js). Two would write over
+    // each other's progress. "在這裡玩" reloads this one, which then takes over in its turn.
+    var gameInstance = null, stoppedForOtherTab = false;
+    function stopForOtherTab() {
+      if (stoppedForOtherTab) return;
+      stoppedForOtherTab = true;
+      var box = document.getElementById("otherTab");
+      box.style.display = "flex";
+      if (gameInstance) {
+        try { gameInstance.SendMessage("Game", "SaveNow"); } catch (e) {}
+        setTimeout(function () { try { gameInstance.Quit(); } catch (e) {} }, 300);
+      }
+    }
+    document.getElementById("playHere").addEventListener("click", function () { location.reload(); });
+    if (window.MeowTabLock) MeowTabLock(stopForOtherTab);
+
+    var canvas = document.getElementById("game");
+    var fill = document.getElementById("fill");
+    var statusText = document.getElementById("status");
+    var pct = document.getElementById("pct");
+    // The line under the bar changes every few seconds while it downloads; near the end it says it's nearly there.
+    var lines = ["正在搬家具進來…", "正在幫貓咪梳毛…", "正在把信放進信箱…", "正在幫花澆水…", "正在把貓碗裝滿…",
+      "正在拍鬆沙發的抱枕…", "正在把毛線球找回來…", "正在打開窗戶透透氣…"];
+    var lineAt = 0, nearlyDone = false, sayTimer = 0;
+    function say(text) {
+      clearTimeout(sayTimer);
+      statusText.classList.add("swap");
+      sayTimer = setTimeout(function () { statusText.textContent = text; statusText.classList.remove("swap"); }, 220);
+    }
+    var cycle = setInterval(function () {
+      if (nearlyDone) return;
+      lineAt = (lineAt + 1) % lines.length;
+      say(lines[lineAt]);
+    }, 2600);
+    function showProgress(progress) {
+      var p = Math.max(0, Math.min(100, Math.round(progress * 100)));
+      fill.style.width = p + "%";
+      pct.textContent = p + "%";
+      if (progress >= 0.9 && !nearlyDone) { nearlyDone = true; say("快好了，貓咪伸了個懶腰…"); }
+    }
+
+    function showError(message) {
+      clearInterval(cycle);
+      clearTimeout(sayTimer);
+      var box = document.getElementById("error");
+      box.style.display = "block";
+      box.textContent = message;
+      document.querySelector(".bar").style.display = "none";
+      pct.style.display = "none";
+      statusText.classList.remove("swap");
+      statusText.textContent = "打不開遊戲";
+    }
+
+    var script = document.createElement("script");
+    script.src = "Build/Web.loader.js";
+    script.onload = function () {
+      createUnityInstance(canvas, {
+        dataUrl: "Build/Web.data.unityweb",
+        frameworkUrl: "Build/Web.framework.js.unityweb",
+        codeUrl: "Build/Web.wasm.unityweb",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DoubleWei",
+        productName: "Meow Home",
+        productVersion: "0.50.63",
+        matchWebGLToCanvasSize: true,
+        devicePixelRatio: Math.min(window.devicePixelRatio || 1, 2),
+      }, showProgress).then(function (instance) {
+        gameInstance = instance;
+        clearInterval(cycle);
+        // (Another tab took over while this one was still loading.)
+        if (stoppedForOtherTab) { try { instance.Quit(); } catch (e) {} return; }
+        document.getElementById("loading").classList.add("done");
+        canvas.focus();
+        // Switched away or swiped shut: save what's going on right now (once the page is hidden the game stops running).
+        var saveNow = function () { try { instance.SendMessage("Game", "SaveNow"); } catch (e) {} };
+        document.addEventListener("visibilitychange", function () { if (document.visibilityState === "hidden") saveNow(); });
+        window.addEventListener("pagehide", saveNow);
+      }).catch(function (message) {
+        showError("這台裝置的瀏覽器打不開遊戲（" + message + "）。請換成最新版的 Chrome、Edge 或 Safari 再試一次。");
+      });
+    };
+    script.onerror = function () { showError("下載遊戲時出了問題，請確認網路後重新整理頁面。"); };
+    document.body.appendChild(script);
+  </script>
+</body>
+</html>
